@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.SysRoleMapper">
+    <sql id="selectSysRole" >
+        SELECT
+            id,
+            create_time,
+            update_time,
+            version,
+            name
+        FROM
+            sys_role
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.SysRoleDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysRoleQuery">
+        <include refid="selectSysRole" />
+        WHERE
+        id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysRoleQuery">
+        SELECT
+            count(id)
+        FROM
+            sys_role
+        WHERE 1=1
+        <if test="name != null and name != ''"> and name = #{name} </if>
+        <if test="id != null and id != ''"> and id = #{id} </if>
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+		delete from sys_role where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.SysRole">
+        INSERT INTO sys_role (
+            id,
+            create_time,
+            version,
+            name
+            )
+        VALUES (
+            #{id},
+            #{createTime},
+            #{version},
+            #{name}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.SysRoleDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysRoleQuery">
+        <include refid="selectSysRole" />
+        WHERE 1=1
+        <if test="name != null and name != ''"> and name = #{name} </if>
+        <if test="id != null and id != ''"> and id = #{id} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.SysRole" >
+        UPDATE sys_role
+        SET
+            version = #{version},
+            name = #{name}
+        WHERE
+        id = #{id}
+    </update>
+
+
+
+</mapper>

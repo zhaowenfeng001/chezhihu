@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.ExecutionJobMapper">
+    <sql id="selectExecutionJob" >
+        SELECT
+            task_id AS taskId,
+            status AS status,
+            bussiness_date AS bussinessDate,
+            trigger_time AS triggerTime,
+            dependency_time AS dependencyTime
+        FROM
+            execution_jobs
+    </sql>
+    <insert id="add" parameterType="com.ksc.kdts.taskmonitor.model.ExecutionJob">
+        INSERT INTO execution_jobs (
+            task_id,
+            bussiness_date,
+            trigger_time,
+            dependency_time,
+            status,
+            effect_descr,
+            begin_time,
+            end_time
+            )
+        VALUES (
+            #{taskId},
+            #{bussinessDate},
+            #{triggerTime},
+            #{dependencyTime},
+            #{status},
+            #{effectDescr},
+            #{beginTime},
+            #{endTime}
+            )
+    </insert>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.ExecutionJobRequest" >
+        UPDATE execution_jobs
+        SET
+            bussiness_Date = #{bussinessDate},
+            triggerTime = #{triggerTime},
+            dependencyTime = #{dependencyTime},
+            status = #{status}
+        WHERE
+        task_id = #{taskId}
+    </update>
+
+    <select id="searchExecutionJob" resultType="com.ksc.kdts.taskmonitor.model.ExecutionJob"
+            parameterType="com.ksc.kdts.taskmonitor.model.ExecutionJobRequest">
+        <include refid="selectExecutionJob" />
+        WHERE
+        task_id = #{taskId}
+        and status in (1,2,-1)
+    </select>
+
+</mapper>

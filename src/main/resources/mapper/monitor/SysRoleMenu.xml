@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.SysRoleMenuMapper">
+    <sql id="selectSysRoleMenu" >
+        SELECT
+            id,
+            role_id AS roleId,
+            menu_id as menuId,
+            create_time as createTime,
+            version
+        FROM
+            sys_role_menu
+    </sql>
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysRoleMenuQuery">
+        SELECT
+            count(id)
+        FROM
+            sys_role_menu
+        WHERE
+        menu_id = #{menuId}
+    </select>
+
+    <delete id="remove" parameterType="com.ksc.kdts.taskmonitor.model.SysRoleMenuQuery">
+		delete from sys_role_menu where
+		role_id=#{roleId}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.SysRoleMenu">
+        INSERT INTO sys_role (
+            id,
+            role_id,
+            menu_id,
+            create_time
+            )
+        VALUES (
+            #{id},
+            #{roleId},
+            #{menuId},
+            #{createTime}
+            )
+    </insert>
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.SysRoleMenuDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysRoleMenuQuery">
+        <include refid="selectSysRoleMenu" />
+        WHERE 1=1
+        <if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
+        <if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+</mapper>
