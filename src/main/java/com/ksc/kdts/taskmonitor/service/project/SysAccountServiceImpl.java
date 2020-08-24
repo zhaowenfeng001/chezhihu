@@ -4,8 +4,10 @@ import com.ksc.kdts.taskmonitor.cons.CacheConstant;
 import com.ksc.kdts.taskmonitor.cons.ErrorConstant;
 import com.ksc.kdts.taskmonitor.mapper.monitor.SysAccountMapper;
 import com.ksc.kdts.taskmonitor.model.SysAccount;
+import com.ksc.kdts.taskmonitor.model.SysAccountDO;
 import com.ksc.kdts.taskmonitor.model.SysAccountQuery;
 import com.ksc.kdts.taskmonitor.service.SysAccountService;
+import com.ksc.kdts.taskmonitor.util.BeanUtils;
 import com.ksc.kdts.taskmonitor.util.CacheHelper;
 import com.ksc.kdts.taskmonitor.util.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -40,9 +42,9 @@ public class SysAccountServiceImpl implements SysAccountService {
         if(StringUtils.isEmpty(req.getPassword())){
             return ErrorConstant.LOGIN_PASS_EMPTY;
         }
-        if(StringUtils.isEmpty(req.getVcCode())){
-        	return "验证码不能为空";
-        }
+//        if(StringUtils.isEmpty(req.getVcCode())){
+//        	return "验证码不能为空";
+//        }
 //        String redisVccode = cacheHelper.getValue(CacheConstant.VC_CODE + req.getVcToken()).toLowerCase();
 //        if(!req.getVcCode().toLowerCase().equals(redisVccode)){
 //        	return "验证码有误";
@@ -74,6 +76,21 @@ public class SysAccountServiceImpl implements SysAccountService {
         //清除登录错误的所有缓存
         cacheHelper.delete(loginKey);
         return token;
+    }
+
+    @Override
+    public SysAccount selectById(Long id) {
+        if (cacheHelper.getValue(CacheConstant.ACCOUNT_ID + id) == null) {
+            SysAccountQuery sysAccountQuery = new SysAccountQuery();
+            sysAccountQuery.setId(id);
+            SysAccount e = sysAccountMapper.searchSysAccount(sysAccountQuery);
+            if (e != null) {
+                // 将账号信息放进缓存
+                cacheHelper.setValue(CacheConstant.ACCOUNT_ID + id, e, CacheConstant.ACCOUNT_CACHE_TIME, TimeUnit.MINUTES);
+                return BeanUtils.copyProperties(e, SysAccountDO.class);
+            }
+        }
+        return cacheHelper.getValue(CacheConstant.ACCOUNT_ID + id, SysAccountDO.class);
     }
 
 }

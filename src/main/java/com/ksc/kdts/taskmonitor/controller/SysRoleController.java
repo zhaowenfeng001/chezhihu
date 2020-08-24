@@ -27,7 +27,7 @@ public class SysRoleController extends BaseController {
     public Response get(@RequestParam(value = "id") Long id) {
         Response response = new Response();
         SysRoleDO sysRoleDO = sysRoleService.selectById(id);
-        response.setResult(sysRoleDO);
+        response.setData(sysRoleDO);
         return response.success();
     }
 
@@ -78,7 +78,7 @@ public class SysRoleController extends BaseController {
     public Response page(Integer current, Integer size, SysRoleQuery query){
         Response response = new Response();
         Page<SysRoleDO> page = sysRoleService.page(new QueryPage(current,size),query);
-        response.setResult(page);
+        response.setData(page);
         return response.success();
     }
 
@@ -91,7 +91,7 @@ public class SysRoleController extends BaseController {
     public Response list(SysRoleQuery query){
         Response response = new Response();
         List<SysMenuDO> list = sysRoleService.searchByQuery(query);
-        response.setResult(list);
+        response.setData(list);
         return response.success();
     }
 
@@ -122,7 +122,7 @@ public class SysRoleController extends BaseController {
             return response.fail("角色id为空");
         }
         List<Long> menuIdList = sysRoleMenuService.listMenuId(query);
-        response.setResult(menuIdList);
+        response.setData(menuIdList);
         return response.success();
     }
 }

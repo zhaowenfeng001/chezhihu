@@ -1,5 +1,7 @@
 package com.ksc.kdts.taskmonitor.model;
 
+import com.ksc.kdts.taskmonitor.util.StringUtils;
+
 /**
  * @ClassName Response
  * @Description 返回结果
@@ -10,11 +12,14 @@ public class Response {
     public static final int SUCCESS = 200;
 
     //状态码
-    private int status;
+    private int code;
     //返回信息
-    private String message;
+    private String msg;
     //返回结果
-    private Object result;
+    private Object data;
+
+
+    
 
     public static Response build() {
         return new Response();
@@ -22,7 +27,7 @@ public class Response {
 
     public static Response build(Object result) {
         Response response = new Response();
-        response.setResult(result);
+        response.setData(result);
         return response;
     }
 
@@ -30,27 +35,27 @@ public class Response {
         return success(SUCCESS, "SUCCESS");
     }
 
-    public Response success(final int status) {
-        return success(status, "SUCCESS");
+    public Response success(final int code) {
+        return success(code, "SUCCESS");
     }
 
-    public Response success(final String message) {
-        return success(SUCCESS, message);
+    public Response success(final String msg) {
+        return success(SUCCESS, msg);
     }
 
-    public Response success(int status, final String message) {
-        this.message = message;
-        this.status = status;
+    public Response success(int code, final String msg) {
+        this.msg = msg;
+        this.code = code;
         return this;
     }
 
-    public Response fail(final String message) {
-        return fail(300, message);
+    public Response fail(final String msg) {
+        return fail(300, msg);
     }
 
-    public Response fail(final int status, final String message) {
-        this.message = message;
-        this.status = status;
+    public Response fail(final int code, final String msg) {
+        this.msg = msg;
+        this.code = code;
         return this;
     }
 
@@ -58,12 +63,12 @@ public class Response {
         return fail(300, e);
     }
 
-    public Response fail(final int status, final Exception e) {
-        String message = e.getMessage();
-        if (message == null || message.isEmpty()) {
-            message = "some error occurs";
+    public Response fail(final int code, final Exception e) {
+        String msg = e.getMessage();
+        if (msg == null || msg.isEmpty()) {
+            msg = "some error occurs";
         }
-        fail(status, message);
+        fail(code, msg);
         return this;
     }
 
@@ -80,28 +85,28 @@ public class Response {
         return result;
     }
 
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public Object getResult() {
-        return result;
+    public Object getData() {
+        return data;
     }
 
-    public void setResult(Object result) {
-        this.result = result;
+    public void setData(Object data) {
+        this.data = data;
     }
 }
 

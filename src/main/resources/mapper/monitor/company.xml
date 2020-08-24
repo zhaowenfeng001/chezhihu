@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.CompanyMapper">
+    <sql id="selectCompany" >
+        SELECT
+            id,
+            create_time as createTime,
+            update_time as updateTime,
+            version as version,
+            company_name as companyName,
+            entry_time as entryTime,
+            mobile as mobile,
+            address as address
+        FROM
+            company
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.CompanyDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.CompanyQuery">
+        <include refid="selectCompany" />
+        WHERE
+        id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.CompanyQuery">
+        SELECT
+            count(id)
+        FROM
+            company
+        WHERE 1=1
+        <if test="id != null and id != ''"> and id = #{id} </if>
+        <if test="companyName != null and companyName != ''"> and company_name = #{companyName} </if>
+        <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
+        <if test="address != null and address != ''"> and address = #{address} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from company where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.Company">
+        INSERT INTO company (
+            id,
+            create_time,
+            version,
+            company_name,
+            entry_time,
+            mobile,
+            address
+            )
+        VALUES (
+            #{id},
+            #{createTime},
+            #{version},
+            #{companyName},
+            #{entryTime},
+            #{mobile},
+            #{address}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.CompanyDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.CompanyQuery">
+        <include refid="selectCompany" />
+        WHERE 1=1
+        <if test="id != null and id != ''"> and id = #{id} </if>
+        <if test="companyName != null and companyName != ''"> and company_name = #{companyName} </if>
+        <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
+        <if test="address != null and address != ''"> and address = #{address} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.Company" >
+        UPDATE company
+        SET
+            version = #{version},
+            update_time = #{updateTime},
+            company_name = #{companyName},
+            entry_time = #{entryTime},
+            mobile = #{mobile},
+            address = #{address}
+        WHERE
+        id = #{id}
+    </update>
+
+
+</mapper>

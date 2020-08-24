@@ -46,7 +46,7 @@ public class SysMenuController extends BaseController {
     public Response get(@RequestParam(value="id") Long id) {
         Response response = new Response();
         SysMenuDO sysMenuDO = sysMenuService.selectById(id);
-        response.setResult(sysMenuDO);
+        response.setData(sysMenuDO);
         return response.success();
     }
 
@@ -129,7 +129,7 @@ public class SysMenuController extends BaseController {
     public Response page(Integer current, Integer size, SysMenuQuery query){
         Response response = new Response();
         Page<SysMenuDO> page = sysMenuService.page(new QueryPage(current,size),query);
-        response.setResult(page);
+        response.setData(page);
         return response.success();
     }
 
@@ -143,7 +143,7 @@ public class SysMenuController extends BaseController {
         Response response = new Response();
         List<SysMenuDO> list = sysMenuService.searchByQuery(query);
     	list = SysMenuUtil.convertChildList(list);
-    	response.setResult(list);
+    	response.setData(list);
         return response.success();
     }
 }

@@ -35,14 +35,6 @@ public class SysMenuUtil {
                     childList.add(second);
                 }
             }
-//			int size = secondList.size();
-//			for(int i = size - 1 ; i >= 0 ; i--){
-//				SysMenu second = secondList.get(i);
-//				if(second.getPid().equals(first.getId())){
-//					childList.add(second);
-//					secondList.remove(i);
-//				}
-//			}
             first.setChildList(BeanUtils.copyListProperties(childList, SysMenuDO.class));
         }
         return firstList;

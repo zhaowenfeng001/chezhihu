@@ -13,64 +13,16 @@ import java.util.Date;
 public class SysAccount extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 角色id
-     */
     private Long roleId;
-
-    /**
-     * 登录名
-     */
     private String loginName;
-
-    /**
-     * 登录密码
-     */
     private String password;
-    /**
-     * 姓名
-     */
     private String name;
-    /**
-     * 10031001 男 10031002 女
-     */
     private Integer gender;
-
-    /**
-     * 手机号码
-     */
-    private String mobile;
-
-    /**
-     * 学历 1本科 2硕士 3博士 4本科以下 5博士以上
-     */
-    private Integer education;
-
-    /**
-     * 入职时间
-     */
+    private String certifiedMobile;
+    private long departmentId;
+    private long companyId;
+    private String wechatNumber;
     private Date entryTime;
-
-    /**
-     * 对应门店id
-     */
-    private Long storeId;
-
-    /**
-     * 1休息中 2挪车中 3空闲中 4交车 5接待中 6回访中
-     */
-    private Integer workStatus;
-
-    /**
-     * 头像
-     */
-    private String headImg;
-
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public Long getRoleId() {
         return roleId;
@@ -112,20 +64,36 @@ public class SysAccount extends BaseEntity {
         this.gender = gender;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getCertifiedMobile() {
+        return certifiedMobile;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setCertifiedMobile(String certifiedMobile) {
+        this.certifiedMobile = certifiedMobile;
     }
 
-    public Integer getEducation() {
-        return education;
+    public long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setEducation(Integer education) {
-        this.education = education;
+    public void setDepartmentId(long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getWechatNumber() {
+        return wechatNumber;
+    }
+
+    public void setWechatNumber(String wechatNumber) {
+        this.wechatNumber = wechatNumber;
     }
 
     public Date getEntryTime() {
@@ -135,30 +103,4 @@ public class SysAccount extends BaseEntity {
     public void setEntryTime(Date entryTime) {
         this.entryTime = entryTime;
     }
-
-    public Long getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
-    }
-
-    public Integer getWorkStatus() {
-        return workStatus;
-    }
-
-    public void setWorkStatus(Integer workStatus) {
-        this.workStatus = workStatus;
-    }
-
-    public String getHeadImg() {
-        return headImg;
-    }
-
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
-    }
-
-
 }

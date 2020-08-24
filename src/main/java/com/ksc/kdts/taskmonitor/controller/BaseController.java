@@ -64,13 +64,6 @@ public abstract class BaseController {
         return Long.parseLong(value);
     }
 
-    /**
-     * 获取当前登录人门店Id
-     * @return
-     */
-    public Long getH5LoginStoreId(){
-        return this.getLoginAccount().getStoreId();
-    }
 
     /**
      * 当前登录人信息

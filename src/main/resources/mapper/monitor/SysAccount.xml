@@ -8,8 +8,16 @@
         create_time,
         update_time,
         version,
-        head_img,
-        role_id, login_name, password,name,gender, mobile, education, entry_time,work_status,store_id
+        role_id,
+        login_name,
+        password,
+        name,
+        gender,
+        certified_mobile as certifiedMobile,
+        department_id AS departmentId,
+        company_id as companyId,
+        wechat_number AS wechatNumber,
+        entry_time AS entryTime
     </sql>
 
     <select id="searchSysAccount" resultType="com.ksc.kdts.taskmonitor.model.SysAccount"
@@ -18,9 +26,10 @@
             <include refid="Base_Column_List" />
         FROM
             Sys_Account
-        WHERE
-        login_name = #{loginName}
-        and password = #{password}
+        WHERE 1=1
+        <if test="loginName != null and loginName != ''"> and login_name = #{loginName} </if>
+        <if test="password != null and password != ''"> and password = #{password} </if>
+        <if test="id != null and id != ''"> and id = #{id} </if>
     </select>
 
 </mapper>

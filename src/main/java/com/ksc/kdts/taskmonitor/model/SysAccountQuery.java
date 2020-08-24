@@ -40,11 +40,6 @@ public class SysAccountQuery implements Serializable{
     private String mobileLike;
 
     /**
-     * 学历多选  学历 1本科 2硕士 3博士 4本科以下 5博士以上'
-     */
-    private List<Integer> eduList;
-
-    /**
      * 统一格式 yyyy-MM-dd
      */
     private String startCreateTime;
@@ -60,30 +55,6 @@ public class SysAccountQuery implements Serializable{
      */
     private String endEntryTime;
 
-    /**
-     * 被分享的销售顾问
-     */
-    private Long shareAccountId;
-
-    /**
-     * 顾客id
-     */
-    private Long customerId;
-
-    /***
-     * 是否推送保险数据
-     */
-    private Integer sendInsure;
-
-    /**
-     * 销售顾问id
-     */
-    private Long salesId;
-
-    /**
-     * 店铺id
-     */
-    private Long storeId;
 
     private String nameLike; //姓名匹配
 
@@ -152,14 +123,6 @@ public class SysAccountQuery implements Serializable{
         this.mobileLike = mobileLike;
     }
 
-    public List<Integer> getEduList() {
-        return eduList;
-    }
-
-    public void setEduList(List<Integer> eduList) {
-        this.eduList = eduList;
-    }
-
     public String getStartCreateTime() {
         return startCreateTime;
     }
@@ -206,46 +169,6 @@ public class SysAccountQuery implements Serializable{
 
     public void setEndEntryTime(String endEntryTime) {
         this.endEntryTime = endEntryTime;
-    }
-
-    public Long getShareAccountId() {
-        return shareAccountId;
-    }
-
-    public void setShareAccountId(Long shareAccountId) {
-        this.shareAccountId = shareAccountId;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public Integer getSendInsure() {
-        return sendInsure;
-    }
-
-    public void setSendInsure(Integer sendInsure) {
-        this.sendInsure = sendInsure;
-    }
-
-    public Long getSalesId() {
-        return salesId;
-    }
-
-    public void setSalesId(Long salesId) {
-        this.salesId = salesId;
-    }
-
-    public Long getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
     }
 
     public String getNameLike() {

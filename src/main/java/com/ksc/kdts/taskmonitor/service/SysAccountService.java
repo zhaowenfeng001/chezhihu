@@ -1,10 +1,7 @@
 package com.ksc.kdts.taskmonitor.service;
 
 
-import com.ksc.kdts.taskmonitor.model.ExecutionJob;
-import com.ksc.kdts.taskmonitor.model.ExecutionJobRequest;
-import com.ksc.kdts.taskmonitor.model.Response;
-import com.ksc.kdts.taskmonitor.model.SysAccountQuery;
+import com.ksc.kdts.taskmonitor.model.*;
 
 /**
  * @ClassName ExecutionJobService
@@ -16,4 +13,6 @@ public interface SysAccountService {
 
 
     String login(SysAccountQuery req);
+
+    SysAccount selectById(Long id);
 }
