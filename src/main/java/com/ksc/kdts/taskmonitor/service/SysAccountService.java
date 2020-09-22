@@ -3,6 +3,8 @@ package com.ksc.kdts.taskmonitor.service;
 
 import com.ksc.kdts.taskmonitor.model.*;
 
+import java.util.List;
+
 /**
  * @ClassName ExecutionJobService
  * @Description ExecutionJobService
@@ -15,4 +17,16 @@ public interface SysAccountService {
     String login(SysAccountQuery req);
 
     SysAccount selectById(Long id);
+
+    Integer count(SysAccountQuery sysAccountQuery);
+
+    void deleteById(Long id);
+
+    void insert(SysAccount sysAccount);
+
+    List<SysAccountDO> searchByQuery(SysAccountQuery query);
+
+    void update(SysAccount sysAccount);
+
+    Page<SysAccountDO> page(QueryPage queryPage, SysAccountQuery query);
 }

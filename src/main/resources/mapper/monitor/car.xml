@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.CarMapper">
+    <sql id="selectCar" >
+        SELECT
+            ca.id,
+            ca.create_time as createTime,
+            ca.update_time as updateTime,
+            ca.version as version,
+            ca.car_number as carNumber,
+            ca.car_model as carModel,
+            ca.vin as vin,
+            ca.entry_time as entryTime,
+            ca.company_id as companyId,
+            ca.department_id as departmentId,
+            com.company_name as companyName,
+            d.department_name as departmentName
+        FROM
+            car ca
+        left join company com on ca.company_id = com.id
+        left join department d on d.id = ca.department_id
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.CarDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.CarQuery">
+        <include refid="selectCar" />
+        WHERE
+        ca.id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.CarQuery">
+        SELECT
+            count(id)
+        FROM
+            car ca
+        WHERE 1=1
+        <if test="id != null and id != ''"> and ca.id = #{id} </if>
+        <if test="carNumber != null and carNumber != ''"> and ca.car_number = #{carNumber} </if>
+        <if test="vin != null and vin != ''"> and ca.vin = #{vin} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from car where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.Car">
+        INSERT INTO car (
+            id,
+            create_time,
+            version,
+            car_number,
+            car_model,
+            vin,
+            entry_time,
+            company_id,
+            department_id
+            )
+        VALUES (
+            #{id},
+            #{createTime},
+            #{version},
+            #{carNumber},
+            #{carModel},
+            #{vin},
+            #{entryTime},
+            #{companyId},
+            #{departmentId}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.CarDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.CarQuery">
+        <include refid="selectCar" />
+        WHERE 1=1
+        <if test="id != null and id != ''"> and ca.id = #{id} </if>
+        <if test="carNumber != null and carNumber != ''"> and ca.car_number = #{carNumber} </if>
+        <if test="vin != null and vin != ''"> and ca.vin = #{vin} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.Car" >
+
+            ca.id,
+            ca.create_time as createTime,
+            ca.version as version,
+            ca.car_number as carNumber,
+            ca.car_model as carModel,
+            ca.vin as vin,
+            ca.entry_time as entryTime,
+            ca.company_id as companyId,
+            ca.department_id as departmentId,
+            com.company_name as companyName,
+            d.department_name as departmentName
+        UPDATE car
+        SET
+            version = #{version},
+            update_time = #{updateTime},
+            car_number = #{carNumber},
+            car_model = #{carModel},
+            vin = #{vin},
+            company_id = #{companyId},
+            department_id = #{departmentId},
+            entry_time = #{entryTime}
+        WHERE
+        id = #{id}
+    </update>
+
+
+</mapper>

@@ -7,6 +7,7 @@
         id,
         create_time,
         update_time,
+        manager,
         version,
         role_id,
         login_name,
@@ -31,5 +32,124 @@
         <if test="password != null and password != ''"> and password = #{password} </if>
         <if test="id != null and id != ''"> and id = #{id} </if>
     </select>
+
+
+    <sql id="selectSysAccount" >
+        SELECT
+            s.id,
+            s.create_time,
+            s.update_time,
+            s.version,
+            s.manager,
+            s.role_id,
+            s.login_name,
+            s.password,
+            s.name,
+            s.gender,
+            s.certified_mobile as certifiedMobile,
+            s.department_id AS departmentId,
+            s.company_id as companyId,
+            s.wechat_number AS wechatNumber,
+            s.entry_time AS entryTime,
+            com.company_name as companyName,
+            d.department_name as departmentName
+        FROM
+            sys_account s
+        left join company com on s.company_id = com.id
+        left join department d on d.id = s.department_id
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.SysAccountDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysAccountQuery">
+        <include refid="selectSysAccount" />
+        WHERE
+        id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysAccountQuery">
+        SELECT
+        count(id)
+        FROM
+        sys_account
+        WHERE 1=1
+        <if test="loginName != null and loginName != ''"> and login_name = #{loginName} </if>
+        <if test="password != null and password != ''"> and password = #{password} </if>
+        <if test="id != null and id != ''"> and id = #{id} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from sys_account where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.SysAccount">
+        INSERT INTO sys_account (
+            create_time,
+            version,
+            role_id,
+            login_name,
+            password,
+            manager,
+            name,
+            gender,
+            certified_mobile,
+            department_id,
+            company_id,
+            wechat_number,
+            entry_time
+            )
+        VALUES (
+            #{createTime},
+            #{version},
+            #{roleId},
+            #{loginName},
+            #{password},
+            #{manager},
+            #{name},
+            #{gender},
+            #{certifiedMobile},
+            #{departmentId},
+            #{companyId},
+            #{wechatNumber},
+            #{entryTime}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.SysAccountDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.SysAccountQuery">
+        <include refid="selectSysAccount" />
+        WHERE 1=1
+        <if test="loginName != null and loginName != ''"> and login_name = #{loginName} </if>
+        <if test="password != null and password != ''"> and password = #{password} </if>
+        <if test="id != null and id != ''"> and id = #{id} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.SysAccount" >
+        UPDATE sys_account
+        SET
+            version = #{version},
+            update_time = #{updateTime},
+            role_id = #{roleId},
+            login_name = #{loginName},
+            password = #{password},
+            name = #{name},
+            gender = #{gender},
+            certified_mobile = #{certifiedMobile},
+            department_id = #{departmentId},
+            company_id = #{companyId},
+            wechat_number = #{wechatNumber},
+            certified_mobile = #{certifiedMobile},
+            entry_time = #{entryTime}
+
+        WHERE
+        id = #{id}
+    </update>
 
 </mapper>

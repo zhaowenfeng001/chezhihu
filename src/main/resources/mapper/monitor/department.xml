@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.DepartmentMapper">
+    <sql id="selectDepartment" >
+        SELECT
+            d.id,
+            d.create_time as createTime,
+            d.update_time as updateTime,
+            d.version as version,
+            d.department_name as departmentName,
+            d.entry_time as entryTime,
+            d.company_id as companyId,
+            com.mobile as mobile,
+            com.address as address
+        FROM
+            department d
+        left join company com on d.company_id = com.id
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.DepartmentDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.DepartmentQuery">
+        <include refid="selectDepartment" />
+        WHERE
+        d.id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.DepartmentQuery">
+        SELECT
+            count(id)
+        FROM
+            department
+        WHERE 1=1
+        <if test="id != null and id != ''"> and id = #{id} </if>
+        <if test="companyId != null and companyId != ''"> and companyId = #{id} </if>
+        <if test="departmentName != null and departmentName != ''"> and department_name = #{departmentName} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from department where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.Department">
+        INSERT INTO department (
+            id,
+            create_time,
+            version,
+            department_name,
+            entry_time,
+            company_id
+            )
+        VALUES (
+            #{id},
+            #{createTime},
+            #{version},
+            #{departmentName},
+            #{entryTime},
+            #{companyId}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.DepartmentDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.DepartmentQuery">
+        SELECT
+            d.id,
+            d.create_time as createTime,
+            d.update_time as updateTime,
+            d.version as version,
+            d.department_name as departmentName,
+            d.entry_time as entryTime,
+            d.company_id as companyId,
+            com.mobile as mobile,
+            com.address as address
+        FROM
+            department d
+        left join company com on d.company_id = com.id
+        WHERE 1=1
+        <if test="id != null and id != ''"> and d.id = #{id} </if>
+        <if test="departmentName != null and departmentName != ''"> and d.department_name = #{departmentName} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.Department" >
+        UPDATE department
+        SET
+            version = #{version},
+            update_time = #{updateTime},
+            department_name = #{departmentName},
+            entry_time = #{entryTime}
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

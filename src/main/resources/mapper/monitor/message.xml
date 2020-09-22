@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.MessageMapper">
+    <sql id="selectMessage" >
+        SELECT
+            me.id as id,
+            me.title as title,
+            me.application_time as applicationTime,
+            me.application_id as applicationId,
+            me.company_id as companyId,
+            me.department_id as departmentId,
+            me.create_time as createTime,
+            me.update_time as updateTime,
+            acc.name as applicationName,
+            com.company_name as companyName,
+            d.department_name as departmentName
+        FROM
+            message me
+        left join sys_account acc on me.application_id = acc.id
+        left join company com on me.company_id = com.id
+        left join department d on d.id = me.department_id
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.MessageDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.MessageQuery">
+        <include refid="selectMessage" />
+        WHERE
+        me.id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.MessageQuery">
+        SELECT
+            count(me.id)
+        FROM
+            message me
+        left join sys_account acc on me.application_id = acc.id
+        left join company com on me.company_id = com.id
+        left join department d on d.id = me.department_id
+        WHERE 1=1
+        <if test="id != null and id != ''"> and me.id = #{id} </if>
+        <if test="title != null and title != ''"> and me.title = #{title} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from message where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.Message">
+        INSERT INTO message (
+            id,
+            title,
+            create_time,
+            version,
+            application_time,
+            application_id,
+            company_id,
+            department_id
+            )
+        VALUES (
+            #{id},
+            #{title},
+            #{createTime},
+            #{version},
+            #{applicationTime},
+            #{applicationId},
+            #{companyId},
+            #{departmentId}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.MessageDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.MessageQuery">
+        <include refid="selectMessage" />
+        WHERE 1=1
+        <if test="id != null and id != ''"> and me.id = #{id} </if>
+        <if test="title != null and title != ''"> and me.title = #{title} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.Message" >
+        UPDATE message
+        SET
+            title = #{title},
+            update_time = #{updateTime},
+            company_id = #{companyId},
+            department_id = #{departmentId},
+            application_time = #{applicationTime},
+            application_id = #{applicationId},
+            version = #{version}
+        WHERE
+        id = #{id}
+    </update>
+
+
+</mapper>

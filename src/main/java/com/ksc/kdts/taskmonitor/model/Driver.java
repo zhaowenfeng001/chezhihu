@@ -6,25 +6,12 @@ import com.ksc.kdts.taskmonitor.util.StringUtils;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- * <p>
- * 账号表
- * </p>
- *
- * @author Richard
- * @since 2019-11-18
- */
-public class SysAccount extends BaseEntity {
+public class Driver extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-    private Long roleId;
-    private String loginName;
-    //是否是管理者：1：管理者，0：员工
-    private Long manager;
+    private String roleName;
 
-    private String password;
     private String name;
-    private Integer gender;
     private String certifiedMobile;
     private long departmentId;
     private long companyId;
@@ -32,51 +19,12 @@ public class SysAccount extends BaseEntity {
     private Date entryTime;
     private String entryTimeStr;
 
-
-    public Long getManager() {
-        return manager;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setManager(Long manager) {
-        this.manager = manager;
-    }
-
-    public String getEntryTimeStr() {
-        if(StringUtils.isBlank(entryTimeStr)){
-            if(Objects.nonNull(entryTime)){
-                return DateUtils.convertToString(entryTime);
-            }
-        }
-
-        return entryTimeStr;
-    }
-
-    public void setEntryTimeStr(String entryTimeStr) {
-        this.entryTimeStr = entryTimeStr;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public String getName() {
@@ -85,14 +33,6 @@ public class SysAccount extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
     }
 
     public String getCertifiedMobile() {
@@ -133,5 +73,19 @@ public class SysAccount extends BaseEntity {
 
     public void setEntryTime(Date entryTime) {
         this.entryTime = entryTime;
+    }
+
+    public String getEntryTimeStr() {
+        if(StringUtils.isBlank(entryTimeStr)){
+            if(Objects.nonNull(entryTime)){
+                return DateUtils.convertToString(entryTime);
+            }
+        }
+
+        return entryTimeStr;
+    }
+
+    public void setEntryTimeStr(String entryTimeStr) {
+        this.entryTimeStr = entryTimeStr;
     }
 }

@@ -3,9 +3,7 @@ package com.ksc.kdts.taskmonitor.service.project;
 import com.ksc.kdts.taskmonitor.cons.CacheConstant;
 import com.ksc.kdts.taskmonitor.cons.ErrorConstant;
 import com.ksc.kdts.taskmonitor.mapper.monitor.SysAccountMapper;
-import com.ksc.kdts.taskmonitor.model.SysAccount;
-import com.ksc.kdts.taskmonitor.model.SysAccountDO;
-import com.ksc.kdts.taskmonitor.model.SysAccountQuery;
+import com.ksc.kdts.taskmonitor.model.*;
 import com.ksc.kdts.taskmonitor.service.SysAccountService;
 import com.ksc.kdts.taskmonitor.util.BeanUtils;
 import com.ksc.kdts.taskmonitor.util.CacheHelper;
@@ -14,7 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -91,6 +91,49 @@ public class SysAccountServiceImpl implements SysAccountService {
             }
         }
         return cacheHelper.getValue(CacheConstant.ACCOUNT_ID + id, SysAccountDO.class);
+    }
+
+    @Override
+    public Integer count(SysAccountQuery sysAccountQuery) {
+        return sysAccountMapper.count(sysAccountQuery);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        sysAccountMapper.deleteById(id);
+    }
+
+    @Override
+    public void insert(SysAccount sysAccount) {
+        sysAccountMapper.insert(sysAccount);
+    }
+
+    @Override
+    public List<SysAccountDO> searchByQuery(SysAccountQuery sysAccountQuery) {
+        List<SysAccountDO> sysAccountDOS = sysAccountMapper.searchByQuery(sysAccountQuery);
+        for(SysAccountDO sysAccountDO:sysAccountDOS){
+
+        }
+
+        return sysAccountDOS;
+    }
+
+    @Override
+    public void update(SysAccount sysAccount) {
+        sysAccountMapper.update(sysAccount);
+    }
+
+    @Override
+    public Page<SysAccountDO> page(QueryPage queryPage, SysAccountQuery sysAccountQuery) {
+        Page result = new Page();
+        sysAccountQuery.setSize(queryPage.getSize());
+        sysAccountQuery.setBegin(queryPage.getBegin());
+        List sysAccountList = sysAccountMapper.searchByQuery(sysAccountQuery);
+        result.setRecords(sysAccountList);
+
+        Integer total = sysAccountMapper.count(sysAccountQuery);
+        result.setTotal(Long.parseLong(total.toString()));
+        return result;
     }
 
 }

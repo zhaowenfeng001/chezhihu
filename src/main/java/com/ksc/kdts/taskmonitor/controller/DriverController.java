@@ -1,7 +1,7 @@
 package com.ksc.kdts.taskmonitor.controller;
 
 import com.ksc.kdts.taskmonitor.model.*;
-import com.ksc.kdts.taskmonitor.service.CompanyService;
+import com.ksc.kdts.taskmonitor.service.DriverService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ksc.kdts.taskmonitor.model.Driver;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -25,14 +26,14 @@ import java.util.List;
  * @since 2019-11-18
  */
 @RestController
-@RequestMapping("/company")
-public class CompanyController extends BaseController {
+@RequestMapping("/driver")
+public class DriverController extends BaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DriverController.class);
 
 
     @Autowired
-    private CompanyService companyService;
+    private DriverService driverService;
 
     /**
      * 根据ID查询
@@ -42,8 +43,8 @@ public class CompanyController extends BaseController {
     @RequestMapping(value = "get")
     public Response get(@RequestParam(value="id") Long id) {
         Response response = new Response();
-        CompanyDO companyDO = companyService.selectById(id);
-        response.setData(companyDO);
+        DriverDO driverDO = driverService.selectById(id);
+        response.setData(driverDO);
         return response.success();
     }
 
@@ -55,44 +56,44 @@ public class CompanyController extends BaseController {
     @RequestMapping(value = "delete")
     public Response delete(@RequestParam(value="id") Long id){
         Response response = new Response();
-    	CompanyDO menu = companyService.selectById(id);
+    	DriverDO menu = driverService.selectById(id);
     	if(menu == null){
     		return response.fail("菜单不存在");
     	}
     	
     	SysRoleMenuQuery query = new SysRoleMenuQuery();
     	query.setMenuId(id);
-        companyService.deleteById(id);
+        driverService.deleteById(id);
         return response.success();
     }
 
     /**
      * 添加
-     * @param company
+     * @param driver
      * @return
      */
     @RequestMapping(value = "insert")
-    public Response insert(Company company){
+    public Response insert(Driver driver){
         Response response = new Response();
-        company.setCreateTime(new Date());
+        driver.setCreateTime(new Date());
         try {
-            company.setEntryTime(DateUtils.parseDate(company.getEntryTimeStr(),"YYYY-MM-dd HH:mm:ss"));
+            driver.setEntryTime(DateUtils.parseDate(driver.getEntryTimeStr(),"YYYY-MM-dd HH:mm:ss"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        companyService.insert(company);
+        driverService.insert(driver);
         return response.success();
     }
 
     /**
      * 修改
-     * @param company
+     * @param driver
      * @return
      */
     @RequestMapping(value = "update")
-    public Response update(@RequestBody Company company){
+    public Response update(@RequestBody Driver driver){
         Response response = new Response();
-        companyService.update(company);
+        driverService.update(driver);
         return response.success();
     }
 
@@ -104,9 +105,9 @@ public class CompanyController extends BaseController {
      * @return
      */
     @RequestMapping(value="page")
-    public Response page(Integer current, Integer size, CompanyQuery query){
+    public Response page(Integer current, Integer size, DriverQuery query){
         Response response = new Response();
-        Page<CompanyDO> page = companyService.page(new QueryPage(current,size),query);
+        Page<DriverDO> page = driverService.page(new QueryPage(current,size),query);
         response.setData(page);
         return response.success();
     }
@@ -117,9 +118,9 @@ public class CompanyController extends BaseController {
      * @return
      */
     @RequestMapping("/list")
-    public Response list(CompanyQuery query){
+    public Response list(DriverQuery query){
         Response response = new Response();
-        List<CompanyDO> list = companyService.searchByQuery(query);
+        List<DriverDO> list = driverService.searchByQuery(query);
     	response.setData(list);
         return response.success();
     }

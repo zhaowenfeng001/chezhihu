@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.UserCarMapper">
+    <sql id="selectUserCar" >
+        SELECT
+            uc.id,
+            uc.create_time as createTime,
+            uc.update_time as updateTime,
+            uc.car_id as carId,
+            uc.user_car_id as userCarId,
+            uc.company_id as companyId,
+            uc.department_id as departmentId,
+            uc.application_time as applicationTime,
+            uc.user_time as userTime,
+            uc.kilometers as kilometers,
+            uc.state as state,
+            uc.version as version,
+            com.company_name as companyName,
+            d.department_name as departmentName,
+            ca.car_number as carNumber,
+            ca.car_model as carModel,
+            ca.vin as vin,
+            ca.entry_time as entryTime,
+            acc.name as userCarName
+
+        FROM
+            user_car uc
+        left join car ca on uc.car_id = ca.id
+        left join company com on uc.company_id = com.id
+        left join department d on d.id = uc.department_id
+        left join sys_account acc on acc.id = uc.user_car_id
+
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.UserCarDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.UserCarQuery">
+        <include refid="selectUserCar" />
+        WHERE
+        uc.id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.UserCarQuery">
+        SELECT
+            count(uc.id)
+        FROM
+            user_car uc
+        left join car ca on uc.car_id = ca.id
+        left join company com on uc.company_id = com.id
+        left join department d on d.id = uc.department_id
+        WHERE 1=1
+        <if test="id != null and id != ''"> and uc.id = #{id} </if>
+        <if test="userCarNumber != null and userCarNumber != ''"> and ca.car_number = #{userCarNumber} </if>
+        <if test="vin != null and vin != ''"> and ca.vin = #{vin} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from user_car where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.UserCar">
+        INSERT INTO user_car (
+            id,
+            create_time,
+            version,
+            car_id,
+            user_car_id,
+            application_time,
+            user_time,
+            kilometers,
+            state,
+            company_id,
+            department_id
+            )
+        VALUES (
+            #{id},
+            #{createTime},
+            #{version},
+            #{carId},
+            #{userCarId},
+            #{applicationTime},
+            #{userTime},
+            #{kilometers},
+            #{state},
+            #{companyId},
+            #{departmentId}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.UserCarDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.UserCarQuery">
+        <include refid="selectUserCar" />
+        WHERE 1=1
+        <if test="id != null and id != ''"> and uc.id = #{id} </if>
+        <if test="userCarNumber != null and userCarNumber != ''"> and ca.car_number = #{userCarNumber} </if>
+        <if test="vin != null and vin != ''"> and ca.vin = #{vin} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.UserCar" >
+        UPDATE user_car
+        SET
+            update_time = #{updateTime},
+            car_id = #{carId},
+            user_car_id = #{userCarId},
+            company_id = #{companyId},
+            department_id = #{departmentId},
+            application_time = #{applicationTime},
+            user_time = #{userTime},
+            kilometers = #{kilometers},
+            state = #{state},
+            version = #{version}
+        WHERE
+        id = #{id}
+    </update>
+
+
+</mapper>

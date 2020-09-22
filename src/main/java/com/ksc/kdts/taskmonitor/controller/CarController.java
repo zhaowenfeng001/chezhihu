@@ -1,7 +1,7 @@
 package com.ksc.kdts.taskmonitor.controller;
 
 import com.ksc.kdts.taskmonitor.model.*;
-import com.ksc.kdts.taskmonitor.service.CompanyService;
+import com.ksc.kdts.taskmonitor.service.CarService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +25,14 @@ import java.util.List;
  * @since 2019-11-18
  */
 @RestController
-@RequestMapping("/company")
-public class CompanyController extends BaseController {
+@RequestMapping("/car")
+public class CarController extends BaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CarController.class);
 
 
     @Autowired
-    private CompanyService companyService;
+    private CarService carService;
 
     /**
      * 根据ID查询
@@ -42,8 +42,8 @@ public class CompanyController extends BaseController {
     @RequestMapping(value = "get")
     public Response get(@RequestParam(value="id") Long id) {
         Response response = new Response();
-        CompanyDO companyDO = companyService.selectById(id);
-        response.setData(companyDO);
+        CarDO carDO = carService.selectById(id);
+        response.setData(carDO);
         return response.success();
     }
 
@@ -55,44 +55,44 @@ public class CompanyController extends BaseController {
     @RequestMapping(value = "delete")
     public Response delete(@RequestParam(value="id") Long id){
         Response response = new Response();
-    	CompanyDO menu = companyService.selectById(id);
+    	CarDO menu = carService.selectById(id);
     	if(menu == null){
     		return response.fail("菜单不存在");
     	}
     	
     	SysRoleMenuQuery query = new SysRoleMenuQuery();
     	query.setMenuId(id);
-        companyService.deleteById(id);
+        carService.deleteById(id);
         return response.success();
     }
 
     /**
      * 添加
-     * @param company
+     * @param car
      * @return
      */
     @RequestMapping(value = "insert")
-    public Response insert(Company company){
+    public Response insert(Car car){
         Response response = new Response();
-        company.setCreateTime(new Date());
+        car.setCreateTime(new Date());
         try {
-            company.setEntryTime(DateUtils.parseDate(company.getEntryTimeStr(),"YYYY-MM-dd HH:mm:ss"));
+            car.setEntryTime(DateUtils.parseDate(car.getEntryTimeStr(),"YYYY-MM-dd HH:mm:ss"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        companyService.insert(company);
+        carService.insert(car);
         return response.success();
     }
 
     /**
      * 修改
-     * @param company
+     * @param car
      * @return
      */
     @RequestMapping(value = "update")
-    public Response update(@RequestBody Company company){
+    public Response update(@RequestBody Car car){
         Response response = new Response();
-        companyService.update(company);
+        carService.update(car);
         return response.success();
     }
 
@@ -104,9 +104,9 @@ public class CompanyController extends BaseController {
      * @return
      */
     @RequestMapping(value="page")
-    public Response page(Integer current, Integer size, CompanyQuery query){
+    public Response page(Integer current, Integer size, CarQuery query){
         Response response = new Response();
-        Page<CompanyDO> page = companyService.page(new QueryPage(current,size),query);
+        Page<CarDO> page = carService.page(new QueryPage(current,size),query);
         response.setData(page);
         return response.success();
     }
@@ -117,9 +117,9 @@ public class CompanyController extends BaseController {
      * @return
      */
     @RequestMapping("/list")
-    public Response list(CompanyQuery query){
+    public Response list(CarQuery query){
         Response response = new Response();
-        List<CompanyDO> list = companyService.searchByQuery(query);
+        List<CarDO> list = carService.searchByQuery(query);
     	response.setData(list);
         return response.success();
     }

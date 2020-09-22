@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ksc.kdts.taskmonitor.mapper.monitor.DriverMapper">
+    <sql id="selectDriver" >
+        SELECT
+            dri.id,
+            dri.create_time,
+            dri.update_time,
+            dri.version,
+            dri.role_name as roleName,
+            dri.name,
+            dri.certified_mobile as certifiedMobile,
+            dri.department_id AS departmentId,
+            dri.company_id as companyId,
+            dri.wechat_number AS wechatNumber,
+            dri.entry_time AS entryTime,
+            com.company_name as companyName,
+            d.department_name as departmentName
+        FROM
+            driver dri
+        left join company com on dri.company_id = com.id
+        left join department d on d.id = dri.department_id
+    </sql>
+
+    <select id="selectById" resultType="com.ksc.kdts.taskmonitor.model.DriverDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.DriverQuery">
+        <include refid="selectDriver" />
+        WHERE
+        dri.id = #{id}
+    </select>
+
+
+    <select id="count" resultType="integer"
+            parameterType="com.ksc.kdts.taskmonitor.model.DriverQuery">
+        SELECT
+            count(dri.id)
+        FROM
+            driver dri
+        WHERE 1=1
+        <if test="id != null and id != ''"> and dri.id = #{id} </if>
+        <if test="name != null and name != ''"> and dri.name = #{name} </if>
+        <if test="certifiedMobile != null and certifiedMobile != ''"> and dri.certified_mobile = #{certifiedMobile} </if>
+    </select>
+
+    <delete id="deleteUserById" parameterType="long">
+		delete from driver where
+		id=#{id}
+	</delete>
+
+    <insert id="insert" parameterType="com.ksc.kdts.taskmonitor.model.Driver">
+        INSERT INTO driver (
+            create_time,
+            version,
+            role_name,
+            name,
+            gender,
+            certified_mobile,
+            department_id,
+            company_id,
+            wechat_number,
+            entry_time
+            )
+        VALUES (
+            #{createTime},
+            #{version},
+            #{roleName},
+            #{name},
+            #{gender},
+            #{certifiedMobile},
+            #{departmentId},
+            #{companyId},
+            #{wechatNumber},
+            #{entryTime}
+            )
+    </insert>
+
+
+    <select id="searchByQuery" resultType="com.ksc.kdts.taskmonitor.model.DriverDO"
+            parameterType="com.ksc.kdts.taskmonitor.model.DriverQuery">
+        <include refid="selectDriver" />
+        WHERE 1=1
+        <if test="id != null and id != ''"> and dri.id = #{id} </if>
+        <if test="name != null and name != ''"> and dri.name = #{name} </if>
+        <if test="certifiedMobile != null and certifiedMobile != ''"> and dri.certified_mobile = #{certifiedMobile} </if>
+        <if test="begin != null and begin != '' and size != null and size != '' ">
+            limit #{begin} , #{size}
+        </if>
+
+    </select>
+
+    <update id="update" parameterType="com.ksc.kdts.taskmonitor.model.Driver" >
+        UPDATE driver
+        SET
+            version = #{version},
+            update_time = #{updateTime},
+            role_name = #{roleName},
+            name = #{name},
+            gender = #{gender},
+            certified_mobile = #{certifiedMobile},
+            department_id = #{departmentId},
+            company_id = #{companyId},
+            wechat_number = #{wechatNumber},
+            certified_mobile = #{certifiedMobile},
+            entry_time = #{entryTime}
+        WHERE
+        id = #{id}
+    </update>
+
+
+</mapper>

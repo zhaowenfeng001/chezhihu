@@ -58,6 +58,24 @@ public class SysAccountQuery implements Serializable{
 
     private String nameLike; //姓名匹配
 
+    private Long begin;
+    private Long size;
+
+    public Long getBegin() {
+        return begin;
+    }
+
+    public void setBegin(Long begin) {
+        this.begin = begin;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
 
     public List<Long> getIdList() {
         return idList;
